@@ -69,6 +69,77 @@ document.addEventListener('DOMContentLoaded', () => {
     videos.forEach((video) => videoObserver.observe(video));
   }
 
+  const mediaItems = document.querySelectorAll('main img, main video');
+  const mediaViewer = document.createElement('dialog');
+  mediaViewer.className = 'media-viewer';
+  mediaViewer.innerHTML = `
+    <div class="media-viewer-inner">
+      <button class="media-viewer-close" type="button" aria-label="Close media viewer">&times;</button>
+      <div class="media-viewer-content"></div>
+      <p class="media-viewer-status" aria-live="polite"></p>
+    </div>
+  `;
+  document.body.appendChild(mediaViewer);
+
+  const viewerContent = mediaViewer.querySelector('.media-viewer-content');
+  const viewerStatus = mediaViewer.querySelector('.media-viewer-status');
+  const closeViewer = () => {
+    mediaViewer.close();
+    viewerContent.replaceChildren();
+    viewerStatus.textContent = '';
+    document.body.classList.remove('media-viewer-open');
+  };
+
+  const openViewer = (media) => {
+    const enlargedMedia = media.cloneNode(true);
+    enlargedMedia.removeAttribute('loading');
+    enlargedMedia.removeAttribute('poster');
+    enlargedMedia.controls = media.tagName === 'VIDEO';
+    enlargedMedia.autoplay = media.tagName === 'VIDEO';
+    enlargedMedia.muted = media.tagName === 'VIDEO';
+    enlargedMedia.controlsList = 'nodownload';
+    enlargedMedia.addEventListener('contextmenu', (event) => event.preventDefault());
+    viewerContent.replaceChildren(enlargedMedia);
+    viewerStatus.textContent = '';
+    mediaViewer.showModal();
+    document.body.classList.add('media-viewer-open');
+  };
+
+  mediaItems.forEach((media) => {
+    media.setAttribute('tabindex', '0');
+    media.setAttribute('role', 'button');
+    media.addEventListener('click', () => openViewer(media));
+    media.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openViewer(media);
+      }
+    });
+    media.addEventListener('contextmenu', (event) => event.preventDefault());
+  });
+
+  mediaViewer.querySelector('.media-viewer-close').addEventListener('click', closeViewer);
+  mediaViewer.addEventListener('click', (event) => {
+    if (event.target === mediaViewer) closeViewer();
+  });
+  mediaViewer.addEventListener('close', () => {
+    viewerContent.replaceChildren();
+    document.body.classList.remove('media-viewer-open');
+  });
+
+  const flagPossibleCapture = () => {
+    if (mediaViewer.open) {
+      viewerStatus.textContent = 'Capture activity suspected';
+      mediaViewer.classList.add('capture-suspected');
+    }
+  };
+
+  window.addEventListener('blur', flagPossibleCapture);
+  document.addEventListener('visibilitychange', flagPossibleCapture);
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'PrintScreen') flagPossibleCapture();
+  });
+
 });
 
 
@@ -94,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
      2. Paste the deployment URL below, replacing the placeholder.
    ========================================================================== */
 
-const VISITOR_LOG_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+const VISITOR_LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxQDG3ThcQir8f88ESADeGaU4kK_bjxhEIfnlHL3qNq8t-allNChsyvrZsPVANUsHFh3w/exec';
 
 (function logVisit() {
   // Skip entirely if the endpoint hasn't been configured yet, or if the
