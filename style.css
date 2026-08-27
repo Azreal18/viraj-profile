@@ -34,6 +34,7 @@ html {
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background: var(--bg);
   color: var(--text-primary);
   font-family: var(--font-body);
@@ -124,7 +125,7 @@ h1, h2, h3 {
 .nav-inner {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 1.1rem var(--space-md);
+  padding: 1.1rem max(var(--space-md), env(safe-area-inset-right)) 1.1rem max(var(--space-md), env(safe-area-inset-left));
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -155,10 +156,12 @@ h1, h2, h3 {
 }
 
 .nav-toggle {
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
   cursor: pointer;
-  padding: 0.4rem;
+  padding: 0.7rem 0.6rem;
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -222,6 +225,7 @@ h1, h2, h3 {
    ========================================================================== */
 
 .hero {
+  min-height: 100vh;
   min-height: 100svh;
   display: flex;
   align-items: center;
@@ -248,7 +252,7 @@ h1, h2, h3 {
 }
 
 .hero-photo {
-  width: 220px;
+  width: min(220px, 65vw);
   margin: 0 auto var(--space-md);
   border-radius: 4px;
   overflow: hidden;
@@ -613,6 +617,45 @@ main video:focus-visible {
   border: none;
   background: rgba(20, 20, 18, 0.96);
   color: var(--bg);
+}
+
+/* Keep spacing and controls comfortable on phones and narrow tablets. */
+@media (max-width: 767px) {
+  .nav-inner {
+    padding-top: max(0.7rem, env(safe-area-inset-top));
+    padding-bottom: 0.7rem;
+  }
+
+  .nav-links.is-open {
+    padding-left: max(var(--space-sm), env(safe-area-inset-left));
+    padding-right: max(var(--space-sm), env(safe-area-inset-right));
+  }
+
+  .section-inner {
+    padding: 4.5rem 1.25rem;
+  }
+
+  .hero {
+    padding: calc(4.5rem + env(safe-area-inset-top)) 1.25rem 3.5rem;
+  }
+
+  .hero-inner h1 {
+    font-size: clamp(2.1rem, 10vw, 3rem);
+  }
+
+  .hero-tagline,
+  .hero-subline {
+    font-size: 0.9rem;
+  }
+
+  .media-viewer {
+    padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  }
+
+  .media-viewer-close {
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+  }
 }
 
 .media-viewer::backdrop {
