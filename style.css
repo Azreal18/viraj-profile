@@ -252,7 +252,7 @@ h1, h2, h3 {
 }
 
 .hero-photo {
-  width: min(220px, 65vw);
+  width: min(320px, 78vw);
   margin: 0 auto var(--space-md);
   border-radius: 4px;
   overflow: hidden;
