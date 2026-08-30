@@ -165,7 +165,9 @@ document.addEventListener('DOMContentLoaded', () => {
      2. Paste the deployment URL below, replacing the placeholder.
    ========================================================================== */
 
-const VISITOR_LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxQDG3ThcQir8f88ESADeGaU4kK_bjxhEIfnlHL3qNq8t-allNChsyvrZsPVANUsHFh3w/exec';
+// Replace this with the Web App URL you get after deploying the script in
+// google-apps-script/Code.gs.
+const VISITOR_LOG_ENDPOINT = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
 
 (function logVisit() {
   // Skip entirely if the endpoint hasn't been configured yet, or if the

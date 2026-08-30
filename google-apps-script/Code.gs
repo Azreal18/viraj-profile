@@ -28,10 +28,17 @@
 
 const SHEET_NAME = 'VisitorLog';
 
+function doGet() {
+  return ContentService
+    .createTextOutput(JSON.stringify({ ok: true, message: 'Visitor logger is ready. Use POST requests from the website.' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
 function doPost(e) {
   try {
     const sheet = getOrCreateSheet_();
-    const data = JSON.parse(e.postData.contents);
+    const raw = e && e.postData && e.postData.contents ? e.postData.contents : '{}';
+    const data = typeof raw === 'string' ? JSON.parse(raw) : raw;
 
     sheet.appendRow([
       data.timestamp || new Date().toISOString(),
