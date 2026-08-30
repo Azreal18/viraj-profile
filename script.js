@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Replace this with the Web App URL you get after deploying the script in
 // google-apps-script/Code.gs.
-const VISITOR_LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxQDG3ThcQir8f88ESADeGaU4kK_bjxhEIfnlHL3qNq8t-allNChsyvrZsPVANUsHFh3w/exec';
+const VISITOR_LOG_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwoOPHrxXMGBOM2GhBvRfo_SlwK6EaB1kHIzVXQMuzOhtADjfJ7X5PDECU2yvfWP_sLNw/exec';
 
 (function logVisit() {
   // Skip entirely if the endpoint hasn't been configured yet, or if the
